@@ -71,3 +71,41 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+# Zenith Staff Portal
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+2. Update the environment variables in `.env.local` with your Supabase credentials:
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+3. Never commit `.env.local` or `src/integrations/supabase/client.ts` to version control
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Deployment on Vercel
+
+1. Add the following environment variables in your Vercel project settings:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+2. Deploy the project:
+```bash
+vercel
+```

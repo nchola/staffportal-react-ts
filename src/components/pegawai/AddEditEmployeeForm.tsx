@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +30,7 @@ export default function AddEditEmployeeForm({ pegawai, onClose, onSuccess }: Pro
     }
   });
 
+  // Using useMutation with better error handling
   const mutation = useMutation({
     mutationFn: async (data: Pegawai) => {
       if (pegawai?.id) {
@@ -40,6 +40,7 @@ export default function AddEditEmployeeForm({ pegawai, onClose, onSuccess }: Pro
       }
     },
     onSuccess: () => {
+      // Immediately invalidate to refresh the data
       queryClient.invalidateQueries({ queryKey: ["pegawai"] });
       toast({ title: "Sukses", description: `Data pegawai berhasil disimpan.` });
       onSuccess();

@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getPegawaiList,
@@ -33,7 +32,7 @@ export default function EmployeesTable() {
   const { data, isLoading, refetch, error } = useQuery({
     queryKey: ["pegawai", page, order],
     queryFn: () => getPegawaiList({ page, limit: 15, order }),
-    placeholderData: (oldData) => oldData, // Replace keepPreviousData with placeholderData
+    placeholderData: (oldData) => oldData, // Keep placeholderData for smooth transitions
   });
 
   const total = data?.total ?? 0;

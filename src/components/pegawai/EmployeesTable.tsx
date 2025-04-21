@@ -33,7 +33,7 @@ export default function EmployeesTable() {
   const { data, isLoading, refetch, error } = useQuery({
     queryKey: ["pegawai", page, order],
     queryFn: () => getPegawaiList({ page, limit: 15, order }),
-    keepPreviousData: true,
+    placeholderData: (oldData) => oldData, // Replace keepPreviousData with placeholderData
   });
 
   const total = data?.total ?? 0;

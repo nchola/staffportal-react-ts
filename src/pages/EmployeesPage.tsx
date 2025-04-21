@@ -1,21 +1,16 @@
 
 import MainLayout from '@/components/layout/MainLayout';
+import EmployeesTable from '@/components/pegawai/EmployeesTable';
 
 const EmployeesPage = () => {
   return (
     <MainLayout>
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">Employee Management</h2>
+        <h2 className="text-3xl font-bold">Data Pegawai PT SUNGAI BUDI GROUP</h2>
         <p className="text-muted-foreground">
-          View and manage employee data, profiles, and documents.
+          Kelola data pegawai dengan fitur tambah, edit, pencarian, dan cetak untuk keperluan manajemen SDM PT Sungai Budi Group.
         </p>
-        
-        <div className="rounded-lg bg-card p-8 text-center">
-          <h3 className="text-xl font-medium mb-2">Employees Module</h3>
-          <p className="text-muted-foreground">
-            This module is being developed. Check back soon for updates.
-          </p>
-        </div>
+        <EmployeesTable />
       </div>
     </MainLayout>
   );

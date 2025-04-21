@@ -1,1 +1,5 @@
+
 project_id = "dlcedsnzahniwvnobxon"
+
+[functions.pegawai-crud]
+verify_jwt = true

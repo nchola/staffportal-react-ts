@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAuth } from '@/context/AuthContext';
@@ -11,14 +10,14 @@ const DashboardPage = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    document.title = 'Dashboard | Zenith HR';
+    document.title = 'Dasbor | Zenith HR';
   }, []);
 
   const greeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 18) return 'Good afternoon';
-    return 'Good evening';
+    if (hour < 12) return 'Selamat pagi';
+    if (hour < 18) return 'Selamat siang';
+    return 'Selamat malam';
   };
 
   return (
@@ -29,34 +28,34 @@ const DashboardPage = () => {
             {greeting()}, {user?.name.split(' ')[0]}
           </h2>
           <p className="text-muted-foreground">
-            Here's an overview of what's happening today.
+            Berikut ringkasan aktivitas hari ini.
           </p>
         </div>
         
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatCard
-            title="Total Employees"
+            title="Total Pegawai"
             value="284"
             icon={<Users className="h-4 w-4" />}
-            description="+12 from last month"
+            description="+12 dari bulan lalu"
           />
           <StatCard
-            title="Open Positions"
+            title="Lowongan Terbuka"
             value="8"
             icon={<BriefcaseIcon className="h-4 w-4" />}
-            description="4 in interview phase"
+            description="4 dalam tahap wawancara"
           />
           <StatCard
-            title="Attendance Today"
+            title="Kehadiran Hari Ini"
             value="97%"
             icon={<Calendar className="h-4 w-4" />}
-            description="8 employees on leave"
+            description="8 pegawai cuti"
           />
           <StatCard
-            title="Pending Requests"
+            title="Permintaan Tertunda"
             value="12"
             icon={<FileCheck className="h-4 w-4" />}
-            description="5 new since yesterday"
+            description="5 baru sejak kemarin"
           />
         </div>
 

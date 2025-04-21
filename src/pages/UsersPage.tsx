@@ -1,19 +1,18 @@
-
 import MainLayout from '@/components/layout/MainLayout';
 
 const UsersPage = () => {
   return (
     <MainLayout>
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">User Management</h2>
+        <h2 className="text-3xl font-bold">Manajemen Pengguna</h2>
         <p className="text-muted-foreground">
-          Manage user accounts and permissions.
+          Kelola akun pengguna dan hak akses.
         </p>
         
         <div className="rounded-lg bg-card p-8 text-center">
-          <h3 className="text-xl font-medium mb-2">Users Module</h3>
+          <h3 className="text-xl font-medium mb-2">Modul Pengguna</h3>
           <p className="text-muted-foreground">
-            This module is being developed. Check back soon for updates.
+            Modul ini sedang dalam pengembangan. Silakan periksa kembali nanti.
           </p>
         </div>
       </div>

@@ -1,19 +1,18 @@
-
 import MainLayout from '@/components/layout/MainLayout';
 
 const AttendancePage = () => {
   return (
     <MainLayout>
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">Attendance Management</h2>
+        <h2 className="text-3xl font-bold">Manajemen Absensi</h2>
         <p className="text-muted-foreground">
-          Track and manage employee attendance records.
+          Pantau dan kelola catatan kehadiran pegawai.
         </p>
         
         <div className="rounded-lg bg-card p-8 text-center">
-          <h3 className="text-xl font-medium mb-2">Attendance Module</h3>
+          <h3 className="text-xl font-medium mb-2">Modul Absensi</h3>
           <p className="text-muted-foreground">
-            This module is being developed. Check back soon for updates.
+            Modul ini sedang dalam pengembangan. Silakan periksa kembali nanti.
           </p>
         </div>
       </div>

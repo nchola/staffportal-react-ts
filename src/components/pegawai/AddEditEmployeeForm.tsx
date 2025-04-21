@@ -1,89 +1,134 @@
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addPegawai, editPegawai } from "@/integrations/pegawaiApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/hooks/use-toast";
+import { addPegawai, editPegawai, type Pegawai } from "@/integrations/pegawaiApi";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-type Pegawai = {
-  id?: string;
-  nip: string;
-  nama_lengkap: string;
-  email?: string;
-  tanggal_bergabung: string;
-};
-
-type Props = {
-  pegawai?: Pegawai|null;
+interface Props {
+  pegawai?: Pegawai | null;
   onClose: () => void;
   onSuccess: () => void;
-};
+}
 
 export default function AddEditEmployeeForm({ pegawai, onClose, onSuccess }: Props) {
-  const queryClient = useQueryClient();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Pegawai>({
-    defaultValues: pegawai || {
-      nip: "",
-      nama_lengkap: "",
-      email: "",
-      tanggal_bergabung: "",
-    }
+  const { toast } = useToast();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      nip: pegawai?.nip || "",
+      nama_lengkap: pegawai?.nama_lengkap || "",
+      email: pegawai?.email || "",
+      tanggal_bergabung: pegawai?.tanggal_bergabung || "",
+    },
   });
 
-  // Using useMutation with better error handling
   const mutation = useMutation({
-    mutationFn: async (data: Pegawai) => {
-      if (pegawai?.id) {
-        return await editPegawai(pegawai.id, data);
-      } else {
-        return await addPegawai(data);
-      }
-    },
+    mutationFn: (data: any) =>
+      pegawai ? editPegawai(pegawai.id, data) : addPegawai(data),
     onSuccess: () => {
-      // Immediately invalidate to refresh the data
-      queryClient.invalidateQueries({ queryKey: ["pegawai"] });
-      toast({ title: "Sukses", description: `Data pegawai berhasil disimpan.` });
+      toast({
+        title: "Berhasil",
+        description: `Data pegawai berhasil ${pegawai ? "diperbarui" : "ditambahkan"}`,
+      });
       onSuccess();
     },
-    onError: (err: any) => {
-      toast({ title: "Gagal", description: err?.message || "Terjadi kesalahan", variant: "destructive" });
-    }
+    onError: (error) => {
+      toast({
+        title: "Gagal",
+        description: `Terjadi kesalahan saat ${
+          pegawai ? "memperbarui" : "menambahkan"
+        } data`,
+        variant: "destructive",
+      });
+    },
   });
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
-        <h3 className="text-lg font-semibold mb-3">{pegawai ? "Edit Pegawai" : "Tambah Pegawai"}</h3>
-        <form onSubmit={handleSubmit(data => mutation.mutate(data))} className="space-y-3">
-          <div>
-            <label className="block mb-1">NIP <span className="text-red-500">*</span></label>
-            <Input {...register("nip", { required: "NIP wajib diisi" })} disabled={!!pegawai?.id} />
-            {errors.nip && <span className="text-sm text-red-500">{errors.nip.message}</span>}
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>
+            {pegawai ? "Edit Data Pegawai" : "Tambah Pegawai Baru"}
+          </DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <label htmlFor="nip">NIP</label>
+              <Input
+                id="nip"
+                {...register("nip", { required: "NIP wajib diisi" })}
+                disabled={!!pegawai}
+              />
+              {errors.nip && (
+                <p className="text-sm text-destructive">{errors.nip.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="nama_lengkap">Nama Lengkap</label>
+              <Input
+                id="nama_lengkap"
+                {...register("nama_lengkap", { required: "Nama wajib diisi" })}
+              />
+              {errors.nama_lengkap && (
+                <p className="text-sm text-destructive">
+                  {errors.nama_lengkap.message}
+                </p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="email">Email</label>
+              <Input
+                id="email"
+                type="email"
+                {...register("email")}
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="tanggal_bergabung">Tanggal Bergabung</label>
+              <Input
+                id="tanggal_bergabung"
+                type="date"
+                {...register("tanggal_bergabung", {
+                  required: "Tanggal bergabung wajib diisi",
+                })}
+              />
+              {errors.tanggal_bergabung && (
+                <p className="text-sm text-destructive">
+                  {errors.tanggal_bergabung.message}
+                </p>
+              )}
+            </div>
           </div>
-          <div>
-            <label className="block mb-1">Nama Lengkap <span className="text-red-500">*</span></label>
-            <Input {...register("nama_lengkap", { required: "Nama wajib diisi" })} />
-            {errors.nama_lengkap && <span className="text-sm text-red-500">{errors.nama_lengkap.message}</span>}
-          </div>
-          <div>
-            <label className="block mb-1">Email</label>
-            <Input {...register("email")} />
-          </div>
-          <div>
-            <label className="block mb-1">Tanggal Bergabung <span className="text-red-500">*</span></label>
-            <Input type="date" {...register("tanggal_bergabung", { required: "Tanggal bergabung wajib diisi" })} />
-            {errors.tanggal_bergabung && <span className="text-sm text-red-500">{errors.tanggal_bergabung.message}</span>}
-          </div>
-          <div className="flex gap-2 mt-4">
-            <Button type="submit" disabled={isSubmitting}>
-              {pegawai ? "Simpan Perubahan" : "Tambah"}
-            </Button>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={onClose}>
               Batal
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
+                  Menyimpan...
+                </>
+              ) : pegawai ? (
+                "Simpan Perubahan"
+              ) : (
+                "Tambah Pegawai"
+              )}
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

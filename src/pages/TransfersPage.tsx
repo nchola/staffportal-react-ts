@@ -1,19 +1,18 @@
-
 import MainLayout from '@/components/layout/MainLayout';
 
 const TransfersPage = () => {
   return (
     <MainLayout>
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">Transfers Management</h2>
+        <h2 className="text-3xl font-bold">Manajemen Mutasi</h2>
         <p className="text-muted-foreground">
-          Manage employee transfers between departments and locations.
+          Kelola mutasi pegawai antar departemen dan lokasi.
         </p>
         
         <div className="rounded-lg bg-card p-8 text-center">
-          <h3 className="text-xl font-medium mb-2">Transfers Module</h3>
+          <h3 className="text-xl font-medium mb-2">Modul Mutasi</h3>
           <p className="text-muted-foreground">
-            This module is being developed. Check back soon for updates.
+            Modul ini sedang dalam pengembangan. Silakan periksa kembali nanti.
           </p>
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 /**
@@ -9,57 +8,82 @@ import { supabase } from "@/integrations/supabase/client";
  * - Query optimization dengan select kolom yang dibutuhkan saja
  */
 
-export async function getPegawaiList({ page = 1, limit = 15, order = "nama_lengkap.asc" } = {}) {
+export interface Pegawai {
+  id: string;
+  nip: string;
+  nama_lengkap: string;
+  email?: string;
+  tanggal_bergabung: string;
+  departemen_id?: string;
+  jabatan_id?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export async function getPegawaiList(
+  page = 1,
+  limit = 10,
+  search = '',
+  order = 'nama_lengkap.asc'
+) {
+  const [field, direction] = order.split('.');
   const offset = (page - 1) * limit;
-  
-  // Split the order string into column and direction
-  const [column, direction] = order.split('.');
-  
-  // Execute count query first to get total
-  const { count, error: countError } = await supabase
+
+  let query = supabase
     .from('pegawai')
-    .select('*', { count: 'exact', head: true });
-  
-  if (countError) throw new Error(countError.message ?? "Gagal menghitung total pegawai");
-  
-  // Then execute the actual data query
-  const { data, error } = await supabase
-    .from('pegawai')
-    .select(`
-      id,
-      nip,
-      nama_lengkap,
-      email,
-      tanggal_bergabung,
-      departemen_id,
-      jabatan_id
-    `)
-    .order(column, { ascending: direction === 'asc' })
+    .select('*', { count: 'exact' });
+
+  if (search) {
+    query = query.or(`nama_lengkap.ilike.%${search}%,nip.ilike.%${search}%,email.ilike.%${search}%`);
+  }
+
+  const { data, error, count } = await query
+    .order(field, { ascending: direction === 'asc' })
     .range(offset, offset + limit - 1);
-  
-  if (error) throw new Error(error.message ?? "Gagal mengambil data pegawai");
-  return { data, total: count };
+
+  if (error) throw error;
+
+  return {
+    data,
+    meta: {
+      total: count || 0,
+      page,
+      limit,
+      lastPage: Math.ceil((count || 0) / limit)
+    }
+  };
 }
 
-export async function addPegawai(payload: any) {
+export async function addPegawai(pegawai: Omit<Pegawai, 'id' | 'created_at' | 'updated_at'>) {
   const { data, error } = await supabase
     .from('pegawai')
-    .insert([payload])
-    .select();
-  
-  if (error) throw new Error(error.message ?? "Gagal menambah data pegawai");
-  return data?.[0];
+    .insert([pegawai])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
-export async function editPegawai(id: string, payload: any) {
+export async function editPegawai(id: string, pegawai: Partial<Pegawai>) {
   const { data, error } = await supabase
     .from('pegawai')
-    .update(payload)
+    .update(pegawai)
     .eq('id', id)
-    .select();
-  
-  if (error) throw new Error(error.message ?? "Gagal mengedit data pegawai");
-  return data?.[0];
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function deletePegawai(id: string) {
+  const { error } = await supabase
+    .from('pegawai')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
 }
 
 export async function printPegawai() {

@@ -1,19 +1,18 @@
-
 import MainLayout from '@/components/layout/MainLayout';
 
 const PromotionsPage = () => {
   return (
     <MainLayout>
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">Promotions Management</h2>
+        <h2 className="text-3xl font-bold">Manajemen Promosi</h2>
         <p className="text-muted-foreground">
-          Manage employee promotions and career development.
+          Kelola promosi dan pengembangan karir pegawai.
         </p>
         
         <div className="rounded-lg bg-card p-8 text-center">
-          <h3 className="text-xl font-medium mb-2">Promotions Module</h3>
+          <h3 className="text-xl font-medium mb-2">Modul Promosi</h3>
           <p className="text-muted-foreground">
-            This module is being developed. Check back soon for updates.
+            Modul ini sedang dalam pengembangan. Silakan periksa kembali nanti.
           </p>
         </div>
       </div>

@@ -59,99 +59,205 @@ export default function EmployeesTable() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <div className="flex items-center justify-between mb-3 gap-2">
         <div className="flex gap-2">
-          <Button size="sm" onClick={() => { setShowForm(true); setEditPegawaiData(null); }}>
+          <Button 
+            size="sm" 
+            className="bg-primary hover:bg-primary/90"
+            onClick={() => { setShowForm(true); setEditPegawaiData(null); }}
+          >
             <Plus className="w-4 h-4 mr-1" /> Tambah Pegawai
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => refetch()}>
+          <Button 
+            size="sm" 
+            variant="secondary" 
+            className="bg-secondary hover:bg-secondary/90"
+            onClick={() => refetch()}
+          >
             <RefreshCcw className="w-4 h-4 mr-1" /> Refresh
           </Button>
-          <Button size="sm" variant="outline" onClick={handleCetak}>
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="border-border/10 hover:bg-muted/50"
+            onClick={handleCetak}
+          >
             <Printer className="w-4 h-4 mr-1" /> Cetak Data
           </Button>
         </div>
-        <div className="flex items-center gap-1">
-          <span>Sort:</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Sort:</span>
           <Button
             size="icon"
             variant={order==="nama_lengkap.asc" ? "default":"outline"}
-            onClick={() => setOrder("nama_lengkap.asc")}
+            className={order==="nama_lengkap.asc" ? "bg-primary" : "border-border/10 hover:bg-muted/50"}
           >
             <ArrowDown className="w-4 h-4" />
           </Button>
           <Button
             size="icon"
             variant={order==="nama_lengkap.desc" ? "default":"outline"}
-            onClick={() => setOrder("nama_lengkap.desc")}
+            className={order==="nama_lengkap.desc" ? "bg-primary" : "border-border/10 hover:bg-muted/50"}
           >
             <ArrowUp className="w-4 h-4" />
           </Button>
         </div>
       </div>
-      {showForm &&
-        <AddEditEmployeeForm
-          pegawai={editPegawaiData}
-          onClose={() => { setShowForm(false); setEditPegawaiData(null); }}
-          onSuccess={() => { setShowForm(false); setEditPegawaiData(null); queryClient.invalidateQueries({ queryKey: ["pegawai"] }); }}
-        />
-      }
-      <div className="rounded-lg border bg-white">
+
+      <div className="rounded-lg border border-border/10 bg-card/30 backdrop-blur-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>NIP</TableHead>
-              <TableHead>Nama</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Tanggal Bergabung</TableHead>
-              <TableHead>Aksi</TableHead>
+            <TableRow className="hover:bg-muted/30">
+              <TableHead className="font-semibold text-foreground">NIP</TableHead>
+              <TableHead className="font-semibold text-foreground">Nama</TableHead>
+              <TableHead className="font-semibold text-foreground">Email</TableHead>
+              <TableHead className="font-semibold text-foreground">Tanggal Bergabung</TableHead>
+              <TableHead className="font-semibold text-foreground">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5}>Memuat data...</TableCell>
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
+                  Memuat data...
+                </TableCell>
               </TableRow>
             ) : (data?.data?.length ?
               data.data.map((peg: Pegawai) => (
-                <TableRow key={peg.id}>
-                  <TableCell>{peg.nip}</TableCell>
-                  <TableCell>{peg.nama_lengkap}</TableCell>
-                  <TableCell>{peg.email ?? "-"}</TableCell>
-                  <TableCell>{peg.tanggal_bergabung}</TableCell>
+                <TableRow 
+                  key={peg.id}
+                  className="hover:bg-muted/20 transition-colors"
+                >
+                  <TableCell className="text-foreground/90">{peg.nip}</TableCell>
+                  <TableCell className="text-foreground/90">{peg.nama_lengkap}</TableCell>
+                  <TableCell className="text-foreground/90">{peg.email ?? "-"}</TableCell>
+                  <TableCell className="text-foreground/90">{peg.tanggal_bergabung}</TableCell>
                   <TableCell>
                     <Button
                       variant="outline"
                       size="sm"
+                      className="border-border/10 hover:bg-muted/50"
                       onClick={() => { setEditPegawaiData(peg); setShowForm(true); }}
                     >
-                      <Edit2 className="w-4 h-4" /> Edit
+                      <Edit2 className="w-4 h-4 mr-1" /> Edit
                     </Button>
                   </TableCell>
                 </TableRow>
               ))
               : (
                 <TableRow>
-                  <TableCell colSpan={5}>Tidak ada data pegawai.</TableCell>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    Tidak ada data pegawai.
+                  </TableCell>
                 </TableRow>
               )
             )}
           </TableBody>
         </Table>
-        <div className="flex justify-between items-center p-2 border-t">
-          <span>Halaman {page} / {lastPage || 1}</span>
-          <div className="flex gap-2">
-            <Button size="sm" disabled={page === 1} onClick={() => setPage(p=>p-1)}>
-              Sebelumnya
-            </Button>
-            <Button size="sm" disabled={page === lastPage || lastPage === 0} onClick={() => setPage(p=>p+1)}>
-              Selanjutnya
-            </Button>
-          </div>
+      </div>
+
+      <div className="flex items-center justify-between px-2">
+        <span className="text-sm text-muted-foreground">
+          Halaman {page} / {lastPage || 1}
+        </span>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            className="border-border/10 hover:bg-muted/50"
+            disabled={page === 1} 
+            onClick={() => setPage(p=>p-1)}
+          >
+            Sebelumnya
+          </Button>
+          <Button 
+            size="sm"
+            variant="outline" 
+            className="border-border/10 hover:bg-muted/50"
+            disabled={page === lastPage || lastPage === 0} 
+            onClick={() => setPage(p=>p+1)}
+          >
+            Selanjutnya
+          </Button>
         </div>
       </div>
-      {error && <div className="text-red-500 mt-2">{(error as any).message}</div>}
+
+      {showForm && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-card rounded-lg border border-border/10 shadow-lg w-full max-w-md p-6">
+            <h3 className="text-xl font-semibold mb-4 text-foreground">
+              {editPegawaiData ? 'Edit Pegawai' : 'Tambah Pegawai'}
+            </h3>
+            <form className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  NIP <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-border/10 bg-muted/50 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Masukkan NIP"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Nama Lengkap <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-border/10 bg-muted/50 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Masukkan nama lengkap"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full rounded-md border border-border/10 bg-muted/50 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Masukkan email"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Tanggal Bergabung <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  className="w-full rounded-md border border-border/10 bg-muted/50 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-border/10 hover:bg-muted/50"
+                  onClick={() => { setShowForm(false); setEditPegawaiData(null); }}
+                >
+                  Batal
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  {editPegawaiData ? 'Simpan Perubahan' : 'Tambah'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="text-destructive mt-2">
+          {(error as any).message}
+        </div>
+      )}
     </div>
   );
 }

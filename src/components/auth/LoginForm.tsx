@@ -39,17 +39,8 @@ const LoginForm = () => {
            style={{ backgroundSize: '32px 32px' }} />
       
       <div className="relative">
-        <CardHeader className="space-y-1 pb-6">
-          <CardTitle className="text-2xl font-bold text-foreground">
-            Masuk ke Portal
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Silakan masukkan kredensial Anda untuk mengakses sistem
-          </CardDescription>
-        </CardHeader>
-
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-6">
             {/* Email Field */}
             <div className="space-y-2">
               <Label 
@@ -62,7 +53,7 @@ const LoginForm = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="nama@perusahaan.com"
+                  placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -89,6 +80,7 @@ const LoginForm = () => {
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -144,37 +136,6 @@ const LoginForm = () => {
                 </>
               )}
             </Button>
-
-            {/* Demo Account Section */}
-            <div className="w-full rounded-lg bg-muted/30 p-4 border border-border/10">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-foreground">
-                    Akun Demo
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    Untuk keperluan testing
-                  </span>
-                </div>
-                <div className="space-y-2 text-sm">
-                  <DemoAccount
-                    role="Admin"
-                    email="admin@zenith.com"
-                    password="admin123"
-                  />
-                  <DemoAccount
-                    role="Pimpinan"
-                    email="pimpinan@zenith.com"
-                    password="pimpinan123"
-                  />
-                  <DemoAccount
-                    role="Pegawai"
-                    email="pegawai@zenith.com"
-                    password="pegawai123"
-                  />
-                </div>
-              </div>
-            </div>
           </CardFooter>
         </form>
       </div>

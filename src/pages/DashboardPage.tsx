@@ -10,7 +10,7 @@ const DashboardPage = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    document.title = 'Dasbor | Zenith HR';
+    document.title = 'PT. Sungai Budi Group';
   }, []);
 
   const greeting = () => {

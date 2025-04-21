@@ -14,7 +14,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    document.title = 'Zenith HR - Staff Portal';
+    document.title = 'PT. Sungai Budi Group';
   }, []);
 
   // Show loading state

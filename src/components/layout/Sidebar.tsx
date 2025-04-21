@@ -124,14 +124,20 @@ const Sidebar = () => {
       <div className={cn('flex h-16 items-center border-b border-border/40 px-4')}>
         {expanded ? (
           <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="font-bold text-white">Z</span>
-            </div>
-            <span className="text-xl font-semibold">Zenith HR</span>
+            <img 
+              src="/logo.png" 
+              alt="PT Sungai Budi Group Logo" 
+              className="h-8 w-auto"
+            />
+            <span className="text-lg font-bold">SUNGAI BUDI</span>
           </div>
         ) : (
-          <div className="mx-auto h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="font-bold text-white">Z</span>
+          <div className="mx-auto">
+            <img 
+              src="/logo.png" 
+              alt="PT Sungai Budi Group Logo" 
+              className="h-8 w-auto"
+            />
           </div>
         )}
       </div>

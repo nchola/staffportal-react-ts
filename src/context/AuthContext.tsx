@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -6,7 +5,7 @@ type User = {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'manager' | 'employee';
+  role: 'admin' | 'pimpinan' | 'pegawai';
   avatar?: string;
 };
 
@@ -29,19 +28,19 @@ const mockUsers = [
   },
   {
     id: '2',
-    name: 'Manager User',
-    email: 'manager@zenith.com',
-    password: 'manager123',
-    role: 'manager' as const,
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=manager',
+    name: 'Pimpinan User',
+    email: 'pimpinan@zenith.com',
+    password: 'pimpinan123',
+    role: 'pimpinan' as const,
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=pimpinan',
   },
   {
     id: '3',
-    name: 'Employee User',
-    email: 'employee@zenith.com',
-    password: 'employee123',
-    role: 'employee' as const,
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=employee',
+    name: 'Pegawai User',
+    email: 'pegawai@zenith.com',
+    password: 'pegawai123',
+    role: 'pegawai' as const,
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=pegawai',
   },
 ];
 

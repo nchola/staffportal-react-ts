@@ -203,8 +203,8 @@ const AttendancePage = () => {
     },
   ];
 
-  // Only admin and manager can add/edit/delete
-  const canManage = user?.role === 'admin' || user?.role === 'manager';
+  // Only admin and pimpinan can add/edit/delete
+  const canManage = user?.role === 'admin' || user?.role === 'pimpinan';
 
   return (
     <MainLayout>

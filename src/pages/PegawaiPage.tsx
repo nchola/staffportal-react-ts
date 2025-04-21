@@ -20,10 +20,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ColumnDef } from '@tanstack/react-table';
-import AddEditEmployeeForm from '@/components/pegawai/AddEditEmployeeForm';
+import AddEditPegawaiForm from '@/components/pegawai/AddEditPegawaiForm';
 import { cn } from '@/lib/utils';
 
-const EmployeesPage = () => {
+const PegawaiPage = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
@@ -290,7 +290,7 @@ const EmployeesPage = () => {
       </div>
 
       {/* Add/Edit Form Dialog */}
-      <AddEditEmployeeForm
+      <AddEditPegawaiForm
         pegawai={selectedPegawai}
         open={showAddEditForm}
         onClose={() => {
@@ -331,4 +331,4 @@ const EmployeesPage = () => {
   );
 };
 
-export default EmployeesPage;
+export default PegawaiPage;

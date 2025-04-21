@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -15,70 +14,93 @@ import {
   UserCheck, 
   FolderSymlink, 
   UserCog, 
-  BriefcaseIcon
+  BriefcaseIcon,
+  FileText,
+  UserPlus,
+  UserMinus,
+  Star,
+  AlertTriangle
 } from 'lucide-react';
 
 type NavItem = {
   title: string;
   href: string;
   icon: React.ElementType;
-  roles?: Array<'admin' | 'manager' | 'employee'>;
+  roles?: Array<'admin' | 'pimpinan' | 'pegawai'>;
 };
 
 const navItems: NavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'Dasbor',
     href: '/dashboard',
     icon: LayoutDashboard,
-    roles: ['admin', 'manager', 'employee'],
+    roles: ['admin', 'pimpinan', 'pegawai'],
   },
   {
-    title: 'Recruitment',
-    href: '/recruitment',
-    icon: BriefcaseIcon,
-    roles: ['admin', 'manager'],
+    title: 'Lamaran',
+    href: '/lamaran',
+    icon: FileText,
+    roles: ['admin', 'pimpinan', 'pegawai'],
   },
   {
-    title: 'Employee Data',
-    href: '/employees',
+    title: 'Rekrutmen',
+    href: '/rekrutmen',
+    icon: UserPlus,
+    roles: ['admin', 'pimpinan'],
+  },
+  {
+    title: 'Data Pegawai',
+    href: '/pegawai',
     icon: Users,
-    roles: ['admin', 'manager', 'employee'],
+    roles: ['admin', 'pimpinan'],
   },
   {
-    title: 'Attendance',
-    href: '/attendance',
+    title: 'Absensi',
+    href: '/absensi',
     icon: Calendar,
-    roles: ['admin', 'manager', 'employee'],
+    roles: ['admin', 'pimpinan', 'pegawai'],
   },
   {
-    title: 'Leave Management',
-    href: '/leave',
+    title: 'Cuti/Izin',
+    href: '/cuti',
     icon: FileCheck,
-    roles: ['admin', 'manager', 'employee'],
+    roles: ['admin', 'pimpinan', 'pegawai'],
   },
   {
-    title: 'Performance',
-    href: '/performance',
-    icon: Award,
-    roles: ['admin', 'manager', 'employee'],
-  },
-  {
-    title: 'Promotions',
-    href: '/promotions',
-    icon: UserCheck,
-    roles: ['admin', 'manager'],
-  },
-  {
-    title: 'Transfers',
-    href: '/transfers',
+    title: 'Mutasi',
+    href: '/mutasi',
     icon: FolderSymlink,
-    roles: ['admin', 'manager'],
+    roles: ['admin', 'pimpinan', 'pegawai'],
   },
   {
-    title: 'User Management',
-    href: '/users',
+    title: 'Pengguna',
+    href: '/pengguna',
     icon: UserCog,
-    roles: ['admin'],
+    roles: ['admin', 'pimpinan'],
+  },
+  {
+    title: 'Reward',
+    href: '/reward',
+    icon: Star,
+    roles: ['admin', 'pimpinan', 'pegawai'],
+  },
+  {
+    title: 'Punishment',
+    href: '/punishment',
+    icon: AlertTriangle,
+    roles: ['admin', 'pimpinan', 'pegawai'],
+  },
+  {
+    title: 'Promosi',
+    href: '/promosi',
+    icon: UserCheck,
+    roles: ['admin', 'pimpinan', 'pegawai'],
+  },
+  {
+    title: 'PHK',
+    href: '/phk',
+    icon: UserMinus,
+    roles: ['admin', 'pimpinan'],
   },
 ];
 

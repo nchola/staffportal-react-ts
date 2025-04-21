@@ -24,7 +24,7 @@ export interface Pegawai {
   tanggal_bergabung: string;
   jabatan_id?: string;
   departemen_id?: string;
-  status?: 'Aktif' | 'Cuti' | 'Tidak Aktif';
+  status: 'Aktif' | 'Non-Aktif';
   created_at?: string;
   updated_at?: string;
   user_id?: string;

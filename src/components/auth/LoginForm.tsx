@@ -163,14 +163,14 @@ const LoginForm = () => {
                     password="admin123"
                   />
                   <DemoAccount
-                    role="Manager"
-                    email="manager@zenith.com"
-                    password="manager123"
+                    role="Pimpinan"
+                    email="pimpinan@zenith.com"
+                    password="pimpinan123"
                   />
                   <DemoAccount
                     role="Pegawai"
-                    email="employee@zenith.com"
-                    password="employee123"
+                    email="pegawai@zenith.com"
+                    password="pegawai123"
                   />
                 </div>
               </div>

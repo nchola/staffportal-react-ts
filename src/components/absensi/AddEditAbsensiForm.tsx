@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -19,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect } from "react";
 
 interface Props {
   absensi?: Absensi | null;
@@ -43,16 +45,8 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm<FormValues>({
-    defaultValues: {
-      pegawai_id: absensi?.pegawai_id || "",
-      tanggal: absensi?.tanggal || new Date().toISOString().split('T')[0],
-      waktu_masuk: absensi?.waktu_masuk?.split('T')[1].split('.')[0] || "",
-      waktu_keluar: absensi?.waktu_keluar?.split('T')[1].split('.')[0] || "",
-      status: absensi?.status || "Hadir",
-      keterangan: absensi?.keterangan || "",
-    },
-  });
+    reset,
+  } = useForm<FormValues>();
 
   // Fetch pegawai list for dropdown
   const { data: pegawaiList } = useQuery({
@@ -60,13 +54,36 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
     queryFn: () => getPegawaiList(1, 100),
   });
 
+  // Reset form when absensi changes
+  useEffect(() => {
+    if (absensi) {
+      reset({
+        pegawai_id: absensi.pegawai_id || "",
+        tanggal: absensi.tanggal,
+        waktu_masuk: absensi.waktu_masuk ? new Date(absensi.waktu_masuk).toISOString().split('T')[1].slice(0, 5) : "",
+        waktu_keluar: absensi.waktu_keluar ? new Date(absensi.waktu_keluar).toISOString().split('T')[1].slice(0, 5) : "",
+        status: absensi.status || "Hadir",
+        keterangan: absensi.keterangan || "",
+      });
+    } else {
+      reset({
+        pegawai_id: "",
+        tanggal: new Date().toISOString().split('T')[0],
+        waktu_masuk: "",
+        waktu_keluar: "",
+        status: "Hadir",
+        keterangan: "",
+      });
+    }
+  }, [absensi, reset]);
+
   const mutation = useMutation({
     mutationFn: (data: FormValues) => {
       // Combine date and time for waktu_masuk and waktu_keluar
       const formattedData = {
         ...data,
-        waktu_masuk: data.waktu_masuk ? `${data.tanggal}T${data.waktu_masuk}Z` : null,
-        waktu_keluar: data.waktu_keluar ? `${data.tanggal}T${data.waktu_keluar}Z` : null,
+        waktu_masuk: data.waktu_masuk ? `${data.tanggal}T${data.waktu_masuk}:00Z` : null,
+        waktu_keluar: data.waktu_keluar ? `${data.tanggal}T${data.waktu_keluar}:00Z` : null,
       };
       
       return absensi 
@@ -79,6 +96,7 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
         description: `Data absensi berhasil ${absensi ? "diperbarui" : "ditambahkan"}`,
       });
       onSuccess();
+      onClose();
     },
     onError: (error) => {
       toast({
@@ -98,6 +116,11 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
           <DialogTitle>
             {absensi ? "Edit Data Absensi" : "Tambah Absensi Baru"}
           </DialogTitle>
+          <DialogDescription>
+            {absensi 
+              ? "Ubah informasi absensi pada form di bawah ini" 
+              : "Isi informasi absensi baru pada form di bawah ini"}
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
           <div className="grid gap-4 py-4">
@@ -106,7 +129,7 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
               <label htmlFor="pegawai_id">Pegawai <span className="text-destructive">*</span></label>
               <Select
                 onValueChange={(value) => setValue("pegawai_id", value)}
-                defaultValue={absensi?.pegawai_id || undefined}
+                defaultValue={absensi?.pegawai_id}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Pilih pegawai" />
@@ -124,65 +147,64 @@ export default function AddEditAbsensiForm({ absensi, open, onClose, onSuccess }
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              {/* Tanggal */}
-              <div className="grid gap-2">
-                <label htmlFor="tanggal">Tanggal <span className="text-destructive">*</span></label>
-                <Input
-                  id="tanggal"
-                  type="date"
-                  className="[color-scheme:dark]"
-                  {...register("tanggal", { required: "Tanggal wajib diisi" })}
-                />
-                {errors.tanggal && (
-                  <p className="text-sm text-destructive">{errors.tanggal.message}</p>
-                )}
-              </div>
-
-              {/* Status */}
-              <div className="grid gap-2">
-                <label htmlFor="status">Status <span className="text-destructive">*</span></label>
-                <Select
-                  onValueChange={(value: FormValues['status']) => setValue("status", value)}
-                  defaultValue={absensi?.status || "Hadir"}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Hadir">Hadir</SelectItem>
-                    <SelectItem value="Terlambat">Terlambat</SelectItem>
-                    <SelectItem value="Izin">Izin</SelectItem>
-                    <SelectItem value="Sakit">Sakit</SelectItem>
-                    <SelectItem value="Cuti">Cuti</SelectItem>
-                    <SelectItem value="Tanpa Keterangan">Tanpa Keterangan</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Tanggal */}
+            <div className="grid gap-2">
+              <label htmlFor="tanggal">Tanggal <span className="text-destructive">*</span></label>
+              <Input
+                id="tanggal"
+                type="date"
+                className="[color-scheme:dark]"
+                {...register("tanggal", { required: "Tanggal wajib diisi" })}
+              />
+              {errors.tanggal && (
+                <p className="text-sm text-destructive">{errors.tanggal.message}</p>
+              )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              {/* Waktu Masuk */}
-              <div className="grid gap-2">
-                <label htmlFor="waktu_masuk">Waktu Masuk</label>
-                <Input
-                  id="waktu_masuk"
-                  type="time"
-                  className="[color-scheme:dark]"
-                  {...register("waktu_masuk")}
-                />
-              </div>
+            {/* Status */}
+            <div className="grid gap-2">
+              <label htmlFor="status">Status <span className="text-destructive">*</span></label>
+              <Select
+                onValueChange={(value: FormValues['status']) => setValue("status", value)}
+                defaultValue={absensi?.status || "Hadir"}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Hadir">Hadir</SelectItem>
+                  <SelectItem value="Terlambat">Terlambat</SelectItem>
+                  <SelectItem value="Izin">Izin</SelectItem>
+                  <SelectItem value="Sakit">Sakit</SelectItem>
+                  <SelectItem value="Cuti">Cuti</SelectItem>
+                  <SelectItem value="Tanpa Keterangan">Tanpa Keterangan</SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.status && (
+                <p className="text-sm text-destructive">{errors.status.message}</p>
+              )}
+            </div>
 
-              {/* Waktu Keluar */}
-              <div className="grid gap-2">
-                <label htmlFor="waktu_keluar">Waktu Keluar</label>
-                <Input
-                  id="waktu_keluar"
-                  type="time"
-                  className="[color-scheme:dark]"
-                  {...register("waktu_keluar")}
-                />
-              </div>
+            {/* Waktu Masuk */}
+            <div className="grid gap-2">
+              <label htmlFor="waktu_masuk">Waktu Masuk</label>
+              <Input
+                id="waktu_masuk"
+                type="time"
+                className="[color-scheme:dark]"
+                {...register("waktu_masuk")}
+              />
+            </div>
+
+            {/* Waktu Keluar */}
+            <div className="grid gap-2">
+              <label htmlFor="waktu_keluar">Waktu Keluar</label>
+              <Input
+                id="waktu_keluar"
+                type="time"
+                className="[color-scheme:dark]"
+                {...register("waktu_keluar")}
+              />
             </div>
 
             {/* Keterangan */}

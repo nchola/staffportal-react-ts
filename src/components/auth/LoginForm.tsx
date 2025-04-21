@@ -32,11 +32,11 @@ const LoginForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md border-border/40">
+    <Card className="w-full max-w-md border-border/40 bg-white/80 backdrop-blur">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
+        <CardTitle className="text-2xl font-bold">Masuk</CardTitle>
         <CardDescription>
-          Enter your credentials to access your account
+          Silakan masukkan email dan password Anda untuk mengakses portal
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -46,14 +46,14 @@ const LoginForm = () => {
             <Input
               id="email"
               type="email"
-              placeholder="name@zenith.com"
+              placeholder="nama@perusahaan.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Kata Sandi</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -80,17 +80,18 @@ const LoginForm = () => {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? 'Sedang masuk...' : 'Masuk'}
           </Button>
         </CardFooter>
       </form>
       <div className="px-8 pb-6">
         <div className="mt-2 text-center text-sm text-muted-foreground">
           <div className="mt-2">
-            <p className="font-medium">Demo Accounts:</p>
+            <p className="font-medium">Akun Demo:</p>
             <p>Email: admin@zenith.com / Password: admin123</p>
             <p>Email: manager@zenith.com / Password: manager123</p>
             <p>Email: employee@zenith.com / Password: employee123</p>
+            {/* Nanti diganti ke akun real jika sudah terhubung Supabase */}
           </div>
         </div>
       </div>

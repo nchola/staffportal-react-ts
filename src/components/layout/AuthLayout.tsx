@@ -10,7 +10,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   const { user, loading } = useAuth();
 
-  // Show loading state
+  // Loading
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -19,18 +19,25 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     );
   }
 
-  // Redirect to dashboard if already authenticated
+  // Redirect jika sudah login
   if (user) {
     return <Navigate to="/dashboard" replace />;
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-muted/40">
-      <div className="flex flex-1 items-center justify-center p-4">
+    <div className="flex min-h-screen flex-col bg-muted/40 relative">
+      {/* Background Gambar */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/landing-bg.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
+      <div className="flex flex-1 items-center justify-center p-4 relative z-10">
         {children}
       </div>
-      <footer className="py-6 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} Zenith HR. All rights reserved.</p>
+      <footer className="py-6 text-center text-sm text-muted-foreground relative z-10">
+        <p>© {new Date().getFullYear()} PT Sungai Budi Group. Hak Cipta Dilindungi.</p>
       </footer>
     </div>
   );

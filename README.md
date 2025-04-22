@@ -39,6 +39,9 @@ src/
 ├── App.tsx        # Root component
 └── main.tsx       # Entry point aplikasi
 ```
+![image](https://github.com/user-attachments/assets/0d82ca23-81b8-4b0c-82b9-a5b2bf8383e0)
+![image](https://github.com/user-attachments/assets/2101ab7a-9b17-42a6-a96f-72a6b98d9fed)
+![image](https://github.com/user-attachments/assets/f3ec76fd-65ba-4845-b118-2b8132405d2d)
 
 ## 🛠️ Setup Development
 
